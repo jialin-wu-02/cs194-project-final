@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<title> CS194 Final PROJECT </title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+* {
+    font-family: 'Oxygen Mono', monospace;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+p, h3, h4, h5 {
+    margin: 0px;
+    line-height: 1.9;
+    padding: 8px 0px;
+}
+
+.link {
+    text-decoration: none;
+    padding: 1px 8px;
+    border-radius: 5px;
+    background-color: rgba(204, 204, 204, 0.591);
+    transition: all .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.link:hover {
+    text-decoration: none;
+    border-radius: 5px;
+    background-color: rgba(113, 99, 238, 0.591);
+}
+
+.main_container {
+    margin: auto;
+    width: 1000px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.row__text {
+  margin-top: 20px;
+}
+
+.text-box {
+  width: 600px;
+}
+
+pre {
+  background-color: #eee;
+  padding: 10px 20px 0px 20px;
+}
+
+</style>
+
+<link rel="stylesheet" href="/styles/default.css">
+<script src="/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<body>
+  <div class="main_container">
+    <h1> CS194 Final PROJECT - Alex Wu </h1>
+    <div class="row__text">
+      <h2> Final Project One: Light Field Camera </h2>
+      <h3> Project Overview </h3>
+      <p> 
+        By capturing images using multiple cameras from different angles over a plane, 
+        we are able to maniuplate the image and perform various cool visual effects. 
+        This project is based on the result of Stanford Light Field Archive, and we 
+        are aiming to perform deptch refocusing and aperture adjustment over on an array of 
+        photos. 
+      </p>
+    </div>
+    <div class="row__text">
+      <h3> Depth Refocusing </h3>
+      <p> 
+        Depth refocusing is the concept of changing the depth of focus in an image so that we can choose 
+        which parts of the image will be focused on. If we take an average over all the images captured from
+        the light field cameras, the focus will be on the far end of the image, since the cameras are focusing 
+        there. If we want to perform a refocus on the near end of the image, 
+        we can shift the images coming from the left cameras to the left and ones from the right cameras to the 
+        right. This way, after performing an average, the things on the near end of the image will be more aligned than
+        the far end of the image. 
+      </p>
+      <p>
+        When shifting the image, if we shift the image differently, the focus will be on different things. After some tests, 
+        my range of scale is from -0.5 to 3, where -0.5 will be focusing on the farthest end 3 on the nearest end. 
+        To generate the GIF, I've used a step of 0.5 to imcrement the scale. Here are some 
+        example images (scale=-0.5, 1.0, 2.5):
+      </p>
+        <div class="row">
+            <img height="180px"src="final2/chess_refocus_-0.5.jpg"> </img>
+            <img height="180px"src="final2/chess_refocus_1.0.jpg"> </img>
+            <img height="180px"src="final2/chess_refocus_2.5.jpg"> </img>
+        </div>
+        <p> Here's the GIF showing the change of focus: </p>
+        <img height="300px" src="final2/chess_refocus.gif" alt="">
+    </div>
+    <div class="row__text">
+      <h3> Aperture Adjustment </h3>
+      <p> 
+        Aperture Adjustment is the concept of changing the aperture of an image so that the amount of 
+        things that will be in focus will change. If we take an average over all the images captured from
+        the light field cameras, the focus will be on the far end of the image, which resembles a smaller aperture. 
+        If we want to perform a aperture adjustment, simply sum over images around the center will change the visual aperture
+        size. 
+      </p>
+      <p>
+        For summing over images around the center, my radius range is from 1 to 8, where 1 is a larger aperture that focus 
+        on the entire image, and 8 is simply the average over all the iamges. Here are some examples: (radius: 1, 4, 8)
+      </p>
+        <div class="row">
+            <img height="180px"src="final2/chess_aperture_1.jpg"> </img>
+            <img height="180px"src="final2/chess_aperture_4.jpg"> </img>
+            <img height="180px"src="final2/chess_aperture_8.jpg"> </img>
+        </div>
+        <p> Here's the GIF showing the change of aperture: </p>
+        <img height="300px" src="final2/chess_aperture.gif" alt="">
+    </div>
+    <div class="row__text">
+      <h3> Extra Credit (Using Real Data) </h3>
+      <p> 
+        For the extra credit, I have collected my own data by shooting an image of my keyboard from fifteen different angles, 
+        mimicing a 5 * 3 camera array. However, after I perform the refocus & aperture adjustment, the result is not as good 
+        as the previous ones. 
+      </p>
+      <p>
+        Here are the results of refocusing: (scale 0.0, 1.0, 1.5)
+      </p>
+        <div class="row">
+            <img height="210px"src="final2/keyboard_refocus_0.0.jpg"> </img>
+            <img height="210px"src="final2/keyboard_refocus_1.0.jpg"> </img>
+            <img height="210px"src="final2/keyboard_refocus_1.5.jpg"> </img>
+        </div>
+        <p>
+        Here are the results of aperture adjustment: (radius: 0, 1, 2)
+        </p>
+        <div class="row">
+            <img height="210px"src="final2/keyboard_aperture_0.jpg"> </img>
+            <img height="210px"src="final2/keyboard_aperture_1.jpg"> </img>
+            <img height="210px"src="final2/keyboard_aperture_2.jpg"> </img>
+        </div>
+        <p> The reason for the poor result is mainly due to my inability to translate the camera steadily through space. 
+        If I can use tripod to build a similar camera frame, the result would be much better. 
+        </p>
+    </div>
+    <div class="row__text">
+      <h2> Final Project Two: Image Quilting </h2>
+      <h3> Project Overview </h3>
+      <p> 
+        Texture is very important in our daily life, and being able to transform the texture of an image onto another image
+        can be very appealing. This project aims to be able to reconstruct some texture images using various methods and also 
+        perform texture transfer from one image to another. 
+      </p>
+    </div>
+    <div class="row__text">
+      <h3> Randomly Sampled Texture </h3>
+      <p> 
+        One way to reconstruct a texture image is to simply randomly sampled patches from the image and then paste them together
+        directly. Here is the result, as you can see there are really no blend between different patches, and the artifacts (edges)
+        are very obvious.
+      </p>
+        <div class="row">
+            <img height="400px"src="final1/part1_random.png"> </img>
+        </div>
+    </div>
+    <div class="row__text">
+      <h3> Overlapping Patches </h3>
+      <p> 
+        A simple way to "hide" all the artifacts is using overlaps. Instead of directly paste the patch in, we overlap one patch
+        with another, and the straight edge artifact will not be that obvious. Additionally, we also calculate the score between 
+        each patch, and choose the one that has the least SSD score to overlap to the image. Here are the results. 
+        The first image is created by forcing the top left patch to be the top left patch in the original image, thus "forcing" the image
+        to become a copy of the original brick wall image. The second image is a reconstructed texture using a random top left patch to start with.
+        As you can see, the artifact is not that obvious at all. I have labelled one relatively obvious artifact in the red square. Overall,
+        it is pretty decent already. 
+      </p>
+        <div class="row">
+            <img height="400px"src="final1/part2_force_match.png"> </img>
+            <img height="400px"src="final1/part2_full.png"> </img>
+        </div>
+    </div>
+    <div class="row__text">
+      <h3> Seam Finding </h3>
+      <p> 
+        Another improvement that we can make is to instead of using straight line to seperate between patches, we can use 
+        curve paths. This makes the patches fuse together more seeminglessly. To calculate the path, we use a dynamic programming 
+        algorithm that calculate the minimum path along a cost image for the overlapping region. Here are the results. The first group
+        of images is a vertical mask on top of the cost image and the two overlapping region of the two patches. The second is a 
+        horizontal mask and cost image with two overlapping regions. This shows how the path is created.
+      </p>
+        <div class="row">
+            <img height="400px"src="final1/mask_vertical.png"> </img>
+            <img height="400px"src="final1/patch1_vertical.png"> </img>
+            <img height="400px"src="final1/patch2_vertical.png"> </img>
+        </div>
+        <div class="row">
+            <img height="90px"src="final1/mask_hori.png"> </img>
+            <img height="90px"src="final1/patch1_hori.png"> </img>
+            <img height="90px"src="final1/patch2_hori.png"> </img>
+        </div>
+        <p> 
+        Here are the results, as you can see, it is much better than the overlapping region ones. Also include several
+        other textures found online as well (the last two).
+      </p>
+        <div class="row">
+            <img height="450px"src="final1/part3_bricks.png"> </img>
+            <img height="450px"src="final1/part3_marble.png"> </img>
+        </div>
+        <div class="row">
+            <img height="350px"src="final1/part3_text.png"> </img>
+            <img height="350px"src="final1/part3_marble2.png"> </img>
+            <img height="350px"src="final1/part3_water.png"> </img>
+        </div>
+    </div>
+    <div class="row__text">
+      <h3> Texture Transfer </h3>
+      <p> 
+        With the texture reconstruct method, we are able to do texture transfer with ease. I simply added another cost term to
+        calculate the cost between the current and the target image. It will "guide" the algorithm to find a better match. Here are 
+        some results:
+      </p>
+        <div class="row">
+            <img height="400px"src="final1/part4_xiaoniao.png"> </img>
+            <img height="400px"src="final1/part4_fey.png"> </img>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
